@@ -1,0 +1,245 @@
+import React, { useState } from "react";
+import UserItem from "./userItem";
+import {Modal, ModalBody, ModalHeader, ModalFooter} from 'reactstrap';
+
+
+const UserList = () => {
+    const [data, setData] = useState([
+        { id: 1, name: "Luis", email: "luis@gmail.com" },
+        { id: 2, name: "Carlos", email: "carlos@gmail.com" },
+        { id: 3, name: "María", email: "maria@gmail.com" },
+        { id: 4, name: "Estefany", email: "estefany@gmail.com" },
+        { id: 5, name: "Martina", email: "martina@gmail.com" },
+        { id: 6, name: "Carlota", email: "carlota@gmail.com" },
+        { id: 7, name: "Samuel", email: "samuel@gmail.com" },
+        { id: 8, name: "Kevin", email: "kevin@gmail.com" },
+        { id: 9, name: "Rafael", email: "rafael@gmail.com" },
+        { id: 10, name: "Laura", email: "laura@gmail.com" },
+    ]);
+    const [modalEditar, setModalEditar] = useState(false);
+    const [modalEliminar, setModalEliminar] = useState(false);
+    const [modalInsertar, setModalInsertar] = useState(false);
+    const [usuarioSeleccionado, setUsuarioSeleccionado] = useState({
+      id: '',
+      name: '',
+      email: ''
+    });
+  
+    const seleccionarUsuario=(elemento, caso)=>{
+  setUsuarioSeleccionado(elemento);
+  (caso==='Editar')?setModalEditar(true):setModalEliminar(true)
+    }
+  
+    const handleChange=e=>{
+      const {name, value}=e.target;
+      setUsuarioSeleccionado((prevState)=>({
+        ...prevState,
+        [name]: value
+      }));
+    }
+  
+    const editar=()=>{
+      var dataNueva=data;
+      dataNueva.map(usuario=>{
+        if(usuario.id===usuarioSeleccionado.id){
+          usuario.email=usuarioSeleccionado.email;
+          usuario.name=usuarioSeleccionado.name;
+        }
+      });
+      setData(dataNueva);
+      setModalEditar(false);
+      console.log({dataNueva}, 'Editar')
+    }
+  
+    const eliminar =()=>{
+      setData(data.filter(usuario=>usuario.id!==usuarioSeleccionado.id));
+      setModalEliminar(false);
+    }
+  
+    const abrirModalInsertar=()=>{
+      setUsuarioSeleccionado(null);
+      setModalInsertar(true);
+    }
+  
+    const insertar =()=>{
+      var valorInsertar=usuarioSeleccionado;
+      valorInsertar.id=data[data.length-1].id+1;
+      var dataNueva = data;
+      dataNueva.push(valorInsertar);
+      setData(dataNueva);
+      setModalInsertar(false);
+      console.log({dataNueva})
+    }
+  
+    return (
+      <div className="App flex w-full">
+        <h2>Gestion de Usuarios</h2>
+        <br />
+      <button className="btn btn-success" onClick={()=>abrirModalInsertar()}>Insertar</button>
+      <br /><br />
+        
+          <table className="table table-bordered">         
+          <thead>
+              <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Acciones</th>
+              </tr>
+          </thead>
+            {data.map((userItem) => {
+              return(
+                <>
+                  <tbody className="flex w-full">
+                    <td><UserItem key={userItem.id} id={userItem.id} /></td>
+                    <td><UserItem key={userItem.id} name={userItem.name} /></td>
+                    <td><UserItem key={userItem.id} email={userItem.email} /></td>
+                    <td><button className="btn btn-primary" onClick={()=>seleccionarUsuario(userItem, 'Editar')}>Editar</button> {"   "} 
+                    <button className="btn btn-danger" onClick={()=>seleccionarUsuario(userItem, 'Eliminar')}>Eliminar</button></td>
+                  </tbody>
+                </>
+                )})
+              }
+        </table>
+  
+        <Modal isOpen={modalEditar}>
+          <ModalHeader>
+            <div>
+              <h3>Editar Usuario</h3>
+            </div>
+          </ModalHeader>
+          <ModalBody>
+            <div className="form-group">
+              <label>ID</label>
+              <input
+                className="form-control"
+                readOnly
+                type="text"
+                name="id"
+                value={usuarioSeleccionado && usuarioSeleccionado.id}
+              />
+              <br />
+  
+              <label>Usuario</label>
+              <input
+                className="form-control"
+                type="text"
+                name="name"
+                value={usuarioSeleccionado && usuarioSeleccionado.name}
+                onChange={handleChange}
+              />
+              <br />
+  
+              <label>Email</label>
+              <input
+                className="form-control"
+                type="text"
+                name="email"
+                value={usuarioSeleccionado && usuarioSeleccionado.email}
+                onChange={handleChange}
+              />
+              <br />
+            </div>
+          </ModalBody>
+          <ModalFooter>
+            <button className="btn btn-primary" onClick={()=>editar()}>
+              Actualizar
+            </button>
+            <button
+              className="btn btn-danger"
+              onClick={()=>setModalEditar(false)}
+            >
+              Cancelar
+            </button>
+          </ModalFooter>
+        </Modal>
+  
+  
+        <Modal isOpen={modalEliminar}>
+          <ModalBody>
+            ¿Estás Seguro que deseas eliminar el usuario: {usuarioSeleccionado && usuarioSeleccionado.name}?
+          </ModalBody>
+          <ModalFooter>
+            <button className="btn btn-danger" onClick={()=>eliminar()}>
+              Sí
+            </button>
+            <button
+              className="btn btn-secondary"
+              onClick={()=>setModalEliminar(false)}
+            >
+              No
+            </button>
+          </ModalFooter>
+        </Modal>
+  
+  
+          <Modal isOpen={modalInsertar}>
+          <ModalHeader>
+            <div>
+              <h3>Insertar País</h3>
+            </div>
+          </ModalHeader>
+          <ModalBody>
+            <div className="form-group">
+              <label>ID</label>
+              <input
+                className="form-control"
+                readOnly
+                type="text"
+                name="id"
+                value={data[data.length-1].id+1}
+              />
+              <br />
+  
+              <label>País</label>
+              <input
+                className="form-control"
+                type="text"
+                name="name"
+                value={usuarioSeleccionado ? usuarioSeleccionado.name: ''}
+                onChange={handleChange}
+              />
+              <br />
+  
+              <label>email</label>
+              <input
+                className="form-control"
+                type="text"
+                name="email"
+                value={usuarioSeleccionado ? usuarioSeleccionado.email: ''}
+                onChange={handleChange}
+              />
+              <br />
+            </div>
+          </ModalBody>
+          <ModalFooter>
+            <button className="btn btn-primary"
+            onClick={()=>insertar()}>
+              Insertar
+            </button>
+            <button
+              className="btn btn-danger"
+              onClick={()=>setModalInsertar(false)}
+            >
+              Cancelar
+            </button>
+          </ModalFooter>
+        </Modal>
+      </div>
+    );
+  }
+  
+export default UserList;
+//   return (
+//     <div className="row">
+//       {userList.map((userItem) => {
+//         return (
+//           <userItem
+//             key={userItem.id}
+//             name={userItem.name}
+//             img={userItem.img}
+//             role={userItem.role}
+//           />
+//         );
+//       })}
+//     </div>
