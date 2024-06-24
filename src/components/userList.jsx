@@ -176,7 +176,7 @@ const UserList = () => {
           <Modal isOpen={modalInsertar}>
           <ModalHeader>
             <div>
-              <h3>Insertar País</h3>
+              <h3>Insertar User</h3>
             </div>
           </ModalHeader>
           <ModalBody>
@@ -191,7 +191,7 @@ const UserList = () => {
               />
               <br />
   
-              <label>País</label>
+              <label>User</label>
               <input
                 className="form-control"
                 type="text"
@@ -201,7 +201,7 @@ const UserList = () => {
               />
               <br />
   
-              <label>email</label>
+              <label>Email</label>
               <input
                 className="form-control"
                 type="text"
@@ -230,16 +230,3 @@ const UserList = () => {
   }
   
 export default UserList;
-//   return (
-//     <div className="row">
-//       {userList.map((userItem) => {
-//         return (
-//           <userItem
-//             key={userItem.id}
-//             name={userItem.name}
-//             img={userItem.img}
-//             role={userItem.role}
-//           />
-//         );
-//       })}
-//     </div>
