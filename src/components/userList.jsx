@@ -7,14 +7,9 @@ const UserList = () => {
     const [data, setData] = useState([
         { id: 1, name: "Luis", email: "luis@gmail.com" },
         { id: 2, name: "Carlos", email: "carlos@gmail.com" },
-        { id: 3, name: "María", email: "maria@gmail.com" },
-        { id: 4, name: "Estefany", email: "estefany@gmail.com" },
-        { id: 5, name: "Martina", email: "martina@gmail.com" },
         { id: 6, name: "Carlota", email: "carlota@gmail.com" },
         { id: 7, name: "Samuel", email: "samuel@gmail.com" },
         { id: 8, name: "Kevin", email: "kevin@gmail.com" },
-        { id: 9, name: "Rafael", email: "rafael@gmail.com" },
-        { id: 10, name: "Laura", email: "laura@gmail.com" },
     ]);
     const [modalEditar, setModalEditar] = useState(false);
     const [modalEliminar, setModalEliminar] = useState(false);
